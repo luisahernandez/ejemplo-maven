@@ -1,40 +1,37 @@
 import groovy.json.JsonSlurperClassic
+
 def jsonParse(def json) {
     new groovy.json.JsonSlurperClassic().parseText(json)
 }
 pipeline {
     agent any
     stages {
-        stage("Paso 1: Compilar"){
+
+        stage("paso 1"){
+            steps {
+                script {
+                sh "echo 'Hello, World Usach 2021!'"
+                }
+            }
+        }
+        stage("paso 2"){
             steps {
                 script {
                 sh "echo 'Compile Code!'"
-                // Run Maven on a Unix agent.
-                sh "mvn clean compile -e"
                 }
             }
         }
-        stage("Paso 2: Testear"){
+        stage("paso 3"){
             steps {
                 script {
                 sh "echo 'Test Code!'"
-                // Run Maven on a Unix agent.
-                sh "mvn clean test -e"
                 }
             }
         }
-        stage("Paso 3: Build .Jar"){
+        stage("paso 4"){
             steps {
                 script {
                 sh "echo 'Build .Jar!'"
-                // Run Maven on a Unix agent.
-                sh "mvn clean package -e"
-                }
-            }
-            post {
-                //record the test results and archive the jar file.
-                success {
-                    archiveArtifacts artifacts:'build/*.jar'
                 }
             }
         }
@@ -46,9 +43,9 @@ pipeline {
         success {
             sh "echo 'fase success'"
         }
+
         failure {
             sh "echo 'fase failure'"
         }
     }
 }
-Collapse
