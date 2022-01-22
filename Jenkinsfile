@@ -10,12 +10,12 @@ pipeline {
                 checkout(
                     [$class: 'GitSCM',
                     //Acá reemplazar por el nonbre de branch
-                    branches: [[name: "circleci" ]],
+                    branches: [[name: "feature-nexus" ]],
                     //Acá reemplazar por su propio repositorio
-                    userRemoteConfigs: [[url: 'https://github.com/tundervirld/clase2mod3seccion3.git']]])
+                    userRemoteConfigs: [[url: 'https://github.com/luisahernandez/ejemplo-maven.git']]])
             }
         }
-        stage("Paso 1: compilar"){
+        stage("Paso 1: Compilaar"){
             steps {
                 script {
                 sh "echo 'Compile Code!'"
@@ -44,7 +44,7 @@ pipeline {
         }
         stage("Paso 4: Análisis SonarQube"){
             steps {
-                withSonarQubeEnv('sonarqube3') {
+                withSonarQubeEnv('sonarqube') {
                     sh "echo 'Calling sonar Service in another docker container!'"
                     // Run Maven on a Unix agent to execute Sonar.
                     sh 'mvn clean verify sonar:sonar'
@@ -54,7 +54,7 @@ pipeline {
                 //record the test results and archive the jar file.
                 success {
                     //archiveArtifacts artifacts:'build/*.jar'
-                    nexusPublisher nexusInstanceId: 'nexus3',
+                    nexusPublisher nexusInstanceId: 'nexus',
                         nexusRepositoryId: 'devops-usach-nexus',
                         packages: [
                             [$class: 'MavenPackage',
@@ -67,7 +67,7 @@ pipeline {
                             artifactId: 'DevOpsUsach2020',
                             groupId: 'com.devopsusach2020',
                             packaging: 'jar',
-                            version: '0.0.1']
+                            version: '0.0.8']
                         ]
                     ]
                 }
@@ -75,16 +75,16 @@ pipeline {
         }
 		stage("Download: Nexus"){
             steps {
-                //http://nexus3:10003/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.2/DevOpsUsach2020-0.0.2.jar
-                sh ' curl -X GET -u admin:admin "http://nexus3:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar" -O'
+                //http://nexus:10001/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.8/DevOpsUsach2020-0.0.8.jar
+                sh ' curl -X GET -u admin:admin "http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.8/DevOpsUsach2020-0.0.8.jar" -O'
             }
         }
         stage("Run: Levantar Springboot APP"){
             steps {
-                sh 'nohup bash java -jar DevOpsUsach2020-0.0.1.jar & >/dev/null'
+                sh 'nohup bash java -jar DevOpsUsach2020-0.0.8.jar & >/dev/null'
             }
         }
-        stage("Curl: Dormir(Esperar 30sg) "){
+        stage("Curl: Dormir(Esperar 20sg) "){
             steps {
                sh "sleep 20 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
             }
@@ -92,14 +92,14 @@ pipeline {
         stage("Subir nueva Version"){
             steps {
                 //archiveArtifacts artifacts:'build/*.jar'
-                nexusPublisher nexusInstanceId: 'nexus3',
+                nexusPublisher nexusInstanceId: 'nexus',
                     nexusRepositoryId: 'devops-usach-nexus',
                     packages: [
                         [$class: 'MavenPackage',
                             mavenAssetList: [
                                 [classifier: '',
                                 extension: '.jar',
-                                filePath: 'DevOpsUsach2020-0.0.1.jar']
+                                filePath: 'DevOpsUsach2020-0.0.8.jar']
                             ],
                     mavenCoordinate: [
                         artifactId: 'DevOpsUsach2020',
