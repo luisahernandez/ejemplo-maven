@@ -14,7 +14,7 @@ pipeline {
                 }
             }
         }
-        stage("Paso 2: Testear"){
+        stage("Paso 2: Testearr"){
             steps {
                 script {
                 sh "echo 'Test Code!'"
