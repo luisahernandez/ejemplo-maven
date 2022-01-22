@@ -15,7 +15,7 @@ pipeline {
                     userRemoteConfigs: [[url: 'https://github.com/tundervirld/clase2mod3seccion3.git']]])
             }
         }
-        stage("Paso 1: Compliar"){
+        stage("Paso 1: compilar"){
             steps {
                 script {
                 sh "echo 'Compile Code!'"
@@ -84,7 +84,7 @@ pipeline {
                 sh 'nohup bash java -jar DevOpsUsach2020-0.0.1.jar & >/dev/null'
             }
         }
-        stage("Curl: Dormir(Esperar 20sg) "){
+        stage("Curl: Dormir(Esperar 30sg) "){
             steps {
                sh "sleep 20 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
             }
