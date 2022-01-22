@@ -15,7 +15,7 @@ pipeline {
                     userRemoteConfigs: [[url: 'https://github.com/luisahernandez/ejemplo-maven.git']]])
             }
         }
-        stage("Paso 1: Compilar"){
+        stage("Paso 1: Compilaar"){
             steps {
                 script {
                 sh "echo 'Compile Code!'"
@@ -61,7 +61,7 @@ pipeline {
                                 mavenAssetList: [
                                     [classifier: '',
                                     extension: '.jar',
-                                    filePath: 'build/DevOpsUsach2020-0.0.1.jar']
+                                    filePath: 'build/DevOpsUsach2020-0.0.8.jar']
                                 ],
                         mavenCoordinate: [
                             artifactId: 'DevOpsUsach2020',
