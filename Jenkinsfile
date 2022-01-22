@@ -15,7 +15,7 @@ pipeline {
                     userRemoteConfigs: [[url: 'https://github.com/luisahernandez/ejemplo-maven.git']]])
             }
         }
-        stage("Paso 1: Compilaar"){
+        stage("Paso 1: Compilar"){
             steps {
                 script {
                 sh "echo 'Compile Code!'"
