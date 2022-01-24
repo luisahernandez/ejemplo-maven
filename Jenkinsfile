@@ -10,9 +10,9 @@ pipeline {
         stage("paso 1"){
             steps {
                 script {
-                            def r = "$ref"
+                            def rr = $ref
 
-                  sh "echo ref "+r
+                  sh "echo ref "+rr
                 }
             }
         }
