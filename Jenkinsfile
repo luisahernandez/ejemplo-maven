@@ -12,7 +12,7 @@ pipeline {
                 script {
                             def rr = $ref
 
-                  sh "echo ref "+$ref
+                  sh "echo  $ref"
                 }
             }
         }
