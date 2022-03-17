@@ -42,43 +42,8 @@ pipeline {
                 }
             }
         }
-        stage("Paso 4: Análisis SonarQube"){
-            steps {
-                withSonarQubeEnv('sonarqube') {
-                    sh "echo 'Calling sonar Service in another docker container!'"
-                    // Run Maven on a Unix agent to execute Sonar.
-                    sh 'mvn clean verify sonar:sonar'
-                }
-            }
-            post {
-                //record the test results and archive the jar file.
-                success {
-                    //archiveArtifacts artifacts:'build/*.jar'
-                    nexusPublisher nexusInstanceId: 'nexus',
-                        nexusRepositoryId: 'devops-usach-nexus',
-                        packages: [
-                            [$class: 'MavenPackage',
-                                mavenAssetList: [
-                                    [classifier: '',
-                                    extension: '.jar',
-                                    filePath: 'build/DevOpsUsach2020-0.0.8.jar']
-                                ],
-                        mavenCoordinate: [
-                            artifactId: 'DevOpsUsach2020',
-                            groupId: 'com.devopsusach2020',
-                            packaging: 'jar',
-                            version: '0.0.8']
-                        ]
-                    ]
-                }
-            }
-        }
-		stage("Download: Nexus"){
-            steps {
-                //http://nexus:10001/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.8/DevOpsUsach2020-0.0.8.jar
-                sh ' curl -X GET -u admin:admin "http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.8/DevOpsUsach2020-0.0.8.jar" -O'
-            }
-        }
+        
+		
         stage("Run: Levantar Springboot APP"){
             steps {
                 sh 'nohup bash java -jar DevOpsUsach2020-0.0.8.jar & >/dev/null'
@@ -86,30 +51,10 @@ pipeline {
         }
         stage("Curl: Dormir(Esperar 20sg) "){
             steps {
-               sh "sleep 20 && curl -X GET 'http://nexus:8081/rest/mscovid/test?msg=testing'"
+               sh "newman run ejemplo-maven.postman_collection.json  -n 10  --delay-request 1000'"
             }
         }
-        stage("Subir nueva Version"){
-            steps {
-                //archiveArtifacts artifacts:'build/*.jar'
-                nexusPublisher nexusInstanceId: 'nexus',
-                    nexusRepositoryId: 'devops-usach-nexus',
-                    packages: [
-                        [$class: 'MavenPackage',
-                            mavenAssetList: [
-                                [classifier: '',
-                                extension: '.jar',
-                                filePath: 'build/DevOpsUsach2020-0.0.8.jar']
-                            ],
-                    mavenCoordinate: [
-                        artifactId: 'DevOpsUsach2020',
-                        groupId: 'com.devopsusach2020',
-                        packaging: 'jar',
-                        version: '1.0.0']
-                    ]
-                ]
-            }
-        }
+        
     }
     post {
         always {

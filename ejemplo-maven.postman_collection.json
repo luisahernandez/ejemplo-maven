@@ -1,0 +1,63 @@
+{
+	"info": {
+		"_postman_id": "393916f1-4bf2-4b29-b8a2-83c3861ff178",
+		"name": "local 8081",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Test",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/rest/mscovid/test?msg=test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rest",
+						"mscovid",
+						"test"
+					],
+					"query": [
+						{
+							"key": "msg",
+							"value": "test"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "estadoPais",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/rest/mscovid/estadoPais?pais=chile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"rest",
+						"mscovid",
+						"estadoPais"
+					],
+					"query": [
+						{
+							"key": "pais",
+							"value": "chile"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
