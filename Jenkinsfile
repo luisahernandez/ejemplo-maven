@@ -41,7 +41,7 @@ pipeline {
         }
         stage("  postaman "){
             steps {
-               sh "newman run ejemplo-maven.postman_collection.json -n 10 --delay-request 1'"
+               sh "newman run ejemplo-maven.postman_collection.json -n 10 --delay-request 1"
             }
         }
         
